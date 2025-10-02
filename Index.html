@@ -203,16 +203,16 @@
         body: JSON.stringify({ prompt })
       });
 
-      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
       
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-      
+      const audioUrl = data.audio_url || data.result_url || data.audio || null;
+
+      if (audiourl) {
       player.src = audioUrl;
       player.style.display = 'block';
       
       downloadLink.href = audioUrl;
-      downloadLink.style.display = 'inline-block';
+      downloadLink.style.display = 'line-block';
       
     } catch (e) {
       errorDiv.textContent = 'Failed to generate music. ' + e.message;
